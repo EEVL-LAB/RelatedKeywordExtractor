@@ -61,12 +61,7 @@ def initialize_adjacency_dict(adjcency_matrix: np.ndarray) -> dict:
     return adjacency_dict
 
 
-
-if __name__ == "__main__":
-    embeddings = np.random.random(size=(3, 20))
-    similarity_matrix = get_similarity_matrix(
-            embeddings
-    )
+def convert_to_adjcency_dict(embeddings: np.ndarray):
+    similarity_matrix = get_similarity_matrix(embeddings)
     adjacency_matrix = initialize_adjacency_matrix(similarity_matrix)
-    initialize_adjacency_dict(adjacency_matrix)
-    
+    return initialize_adjacency_dict(adjacency_matrix)
