@@ -6,11 +6,16 @@ from typing import List
 async def request_embedding(texts: List[str]) -> np.ndarray:
     async with aiohttp.ClientSession() as sess:
         response = await sess.post(
-            url='http://sample:8080',
+            url='http://localhost:9000/get_embedding_mp',
             json={
                 "texts": texts
             }
         )
         response = await response.json()
-        embeddings = response.get('embeddings')
-        return np.array(embeddings)
+        embeddings = response.get('result')
+        return np.array(
+            [
+                embedding.get('embedding') 
+                for embedding in embeddings
+            ]
+        )
