@@ -1,8 +1,9 @@
 kiwipiepy
 numpy
 scipy
-redis
 faiss-cpu
 fastapi
 uvicorn[standard]
 aiohttp
+aioredis
+pandas
