@@ -1,9 +1,9 @@
 kiwipiepy
 numpy
 scipy
-faiss-cpu
 fastapi
 uvicorn[standard]
 aiohttp
 aioredis
 pandas
+mlxtend
