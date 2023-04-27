@@ -7,3 +7,4 @@ aiohttp
 aioredis
 pandas
 mlxtend
+boto3
