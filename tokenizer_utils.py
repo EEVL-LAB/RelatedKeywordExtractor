@@ -7,7 +7,7 @@ async def request_tokenize_graphframe(document: str) -> dict:
     connector = aiohttp.TCPConnector(limit=50)
     async with aiohttp.ClientSession(connector=connector) as sess:
         response = await sess.post(
-            url='http://office.eevl.studio/tokenizer/tokenize/kiwi/clickhouse',
+            url='http://office.eevl.studio/tokenizer/tokenize/kiwi/clickhouse?adjective=false',
             json={
                 "text": document
             }
