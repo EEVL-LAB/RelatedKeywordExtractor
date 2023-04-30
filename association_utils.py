@@ -3,26 +3,6 @@ import pandas as pd
 from typing import List
 from dynamodb_utils import *
 from tokenizer_utils import *
-# from mlxtend.frequent_patterns import apriori, association_rules
-# from mlxtend.preprocessing import TransactionEncoder
-
-
-# async def convert_to_lift_dataframe(target_keyword: str):
-#     table = await load_table()
-#     documents = await retrieve_documents(table, target_keyword)
-#     keywords = await asyncio.gather(*[
-#         extract_available_keywords(document) for document in documents
-#     ])
-
-#     encoder = TransactionEncoder()
-#     encoded_keywords = encoder.fit(keywords).transform(keywords)
-#     df = pd.DataFrame(encoded_keywords, columns=encoder.columns_)
-#     df.to_csv('transaction.csv')
-
-#     df = apriori(df, min_support=0.2, use_colnames=True, verbose=1)
-#     df = association_rules(df, metric="confidence", min_threshold=0.2)
-#     # df = df[df.antecedents == {target_keyword}]
-#     df.to_csv('lift.csv')
 
 
 async def support(size_series: pd.Series, indicies: tuple) -> float:
@@ -43,7 +23,7 @@ async def lift(size_series: pd.Series, indicies: tuple) -> float:
     return indicies, score
 
 
-async def convert_to_lift_dataframe(target_keyword: str):
+async def convert_to_lift_dataframe(target_keyword: str) -> pd.DataFrame:
     secret = await read_secret()
     table = await load_table(secret)
     documents = await retrieve_documents(table, target_keyword)
@@ -68,13 +48,14 @@ async def convert_to_lift_dataframe(target_keyword: str):
     ])
     
     df_contents = {
-        "asc": list(),
-        "con": list(),
+        "src": list(),
+        "dst": list(),
         "lift": list()
     }
     for indicies, score in results:
-        df_contents['asc'].append(indicies[0])
-        df_contents['con'].append(indicies[1])
+        df_contents['src'].append(indicies[0])
+        df_contents['dst'].append(indicies[1])
         df_contents['lift'].append(score)
     lift_df = pd.DataFrame(df_contents)
-    lift_df.to_csv("lift.csv")
+    lift_df = lift_df.sort_values(by='lift', axis=0, ascending=False)
+    return lift_df

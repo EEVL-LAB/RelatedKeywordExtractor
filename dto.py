@@ -4,8 +4,9 @@ from pydantic import BaseModel
 
 class RelatedKeywordRequestParams(BaseModel):
     target_keyword: str
-    
-    
-class RelatedKeywordResponse(BaseModel):
+
+
+class RelatedKeyword(BaseModel):
     target_keyword: str
-    related_keywords: List[str]
+    related_keyword: str
+    lift_score: float
