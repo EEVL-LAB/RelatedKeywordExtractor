@@ -1,5 +1,6 @@
 import json
 import boto3
+import datetime
 from boto3.dynamodb.conditions import Key
 
 
@@ -20,8 +21,14 @@ async def load_table(secret: dict):
 
 
 async def retrieve_documents(table, target_keyword):
+    today = datetime.datetime.now()
+    delta = datetime.timedelta(days=5)
+    previous = (today - delta).strftime("%Y-%m-%d")
+    today = today.strftime("%Y-%m-%d")
+    
     query = {
-        "KeyConditionExpression": Key("TargetKeyword").eq(target_keyword)
+        "IndexName": 'TargetKeyword-Date-index',
+        "KeyConditionExpression": Key("TargetKeyword").eq(target_keyword) & Key('Date').between(previous, today)
     }
     documents = table.query(**query)
     return [
