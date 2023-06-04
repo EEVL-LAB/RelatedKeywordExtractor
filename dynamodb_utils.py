@@ -4,13 +4,13 @@ import datetime
 from boto3.dynamodb.conditions import Key
 
 
-async def read_secret():
+def read_secret():
     with open('secret.json', 'r') as f:
         secret = json.load(f)
         return secret
 
 
-async def load_table(secret: dict):
+def load_table(secret: dict):
     dynamodb = boto3.resource(
         'dynamodb', 
         region_name='ap-northeast-2',
@@ -22,7 +22,7 @@ async def load_table(secret: dict):
 
 async def retrieve_documents(table, target_keyword):
     today = datetime.datetime.now()
-    delta = datetime.timedelta(days=5)
+    delta = datetime.timedelta(weeks=4)
     previous = (today - delta).strftime("%Y-%m-%d")
     today = today.strftime("%Y-%m-%d")
     

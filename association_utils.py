@@ -23,10 +23,7 @@ async def lift(size_series: pd.Series, indicies: tuple) -> float:
     return indicies, score
 
 
-async def convert_to_lift_dataframe(target_keyword: str) -> pd.DataFrame:
-    secret = await read_secret()
-    table = await load_table(secret)
-    documents = await retrieve_documents(table, target_keyword)
+async def convert_to_lift_dataframe(documents: List[str], target_keyword: str) -> pd.DataFrame:
     graphframes = list()
     for start in range(0, len(documents), 10):
         g = await asyncio.gather(*[
